@@ -21,7 +21,7 @@ Responding to such emails take time, even with pre-made templates. A customer se
 **Agent-I** gathers the neccessary information from business specific data warehouses and generates ready-to-send email templates that a Customer Service Associate can review and send.
 
 ### Architecture Flow Diagram
-![Architecture Flow Diagram][project_flow_diagram.png]
+![Architecture Flow Diagram][https://github.com/SJSU272Lab/Fall16-Team21/blob/master/images/project_flow_diagram.png]
 
 ### User Stories
 - Sally is a newly hired customer service associate. She has extensive experience in customer service but is new to the company's customer information retrieval software. Luckily her company is using **Agent-I** to generate emails tailored for the customer. She receives her first customer support email. **Agent-I** analyzes the customers mood and retrieves information pertaining to the customer's query. A ready-to-send email is presented to Sally to review. She takes a quick look and presses send. The customer receives a quick response and Sally is left to do more important tasks.
