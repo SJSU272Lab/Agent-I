@@ -1,17 +1,17 @@
 # Fall16-Team21
 
+## Project: ______
+
 ## Members:
 - Anudeep Rentala
 - Arunabh Shrivastava
 - Nilam Pratim Deka
 - Tuan Pham
 
-## Project: ______
-
 ### Abstract
 ______ is an application designed to streamline customer support. Companies get thousands of customer support emails every single day. Most of these emails are questions that are similar in format.
 
-> My order id is 123abc, I've cancelled this order and haven't received a refund yet. When can I expect my refund?
+> *My order id is 1621, I've cancelled this order and haven't received a refund yet. When can I expect my refund?*
 
 Responding to these kind of emails take time, even with pre-made templates. ____ uses cutting-edge AI technology to read and understand customer emails. ____ gathers the neccessary information from business specific data warehouses and generates ready-to-send email templates that a Customer Service Associate can review and send.
 
