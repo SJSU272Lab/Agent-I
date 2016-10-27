@@ -13,7 +13,7 @@ ______ is an application designed to streamline customer support. Companies get 
 
 > *My order id is 1621, I've cancelled this order and haven't received a refund yet. When can I expect my refund?*
 
-Responding to these kind of emails take time, even with pre-made templates. ____ uses cutting-edge AI technology to read and understand customer emails.
+Responding to these kind of emails take time, even with pre-made templates. A customer service associate would have to look up the customer's information through an application that queries the customer information database and fill in the template. ____ uses cutting-edge AI technology to read and understand customer emails.
 
 
 > *The phone I was delivered is broken! I want to return this, how do I do that?*
