@@ -13,11 +13,11 @@ exports.analyzeEmail = function(req, res) {
   if (email.length === 0)
     return res.status(400).json({ error: "'email' is empty." });
 
-  AgentI.analyze(email, function(err, responses) {
+  AgentI.analyze(email, function(err, response) {
     if (err) return res.status(400).json({ error: err });
-    if (!responses)
+    if (!response)
       return res.status(500).json({ error: "AgentI failed to generate email response."});
 
-    return res.status(200).json({ responses: responses });
+    return res.status(200).json({ response: response });
   });
 };
