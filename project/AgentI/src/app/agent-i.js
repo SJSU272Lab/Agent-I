@@ -2,7 +2,7 @@
 'use strict';
 
 var async = require('async');
-var config = require('../config');
+var config = require('../config.json');
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var toneAnalyzer = new ToneAnalyzerV3({
   username : config.toneAnalyzer.username,
@@ -46,7 +46,7 @@ exports.analyze = function(email, sendResponse) {
 };
 
 function extractCustomerInfo(email, callback) {
-  var orderIdPattern = config.orderIdPattern;
+  var orderIdPattern = /\d{4}-\d{7}-\d{7}/i;
   var results = email.match(orderIdPattern);
   if(results != null && results.length >0)
     getOrder(results[0], function (err,data) {
