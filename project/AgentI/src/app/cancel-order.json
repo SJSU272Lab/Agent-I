@@ -1,0 +1,11 @@
+{
+  "anger": "Hi <customer-title>. <customer-name>,\n\n\tWe are sorry for the troubles you've been having with your order. The following orders have been canceled:\n<orders>A full refund of <order-total-cost> has been credited to your credit card ending in <customer-credit-card-code>. We hope you've had a great experience shopping with us.\n\n-Customer Service",
+
+  "disgust": "Hi <customer-title>. <customer-name>,\n\n\tWe are sorry for the troubles you've been having with your order. The following orders have been canceled:\n<orders>A full refund of <order-total-cost> has been credited to your credit card ending in <customer-credit-card-code>. We hope you've had a great experience shopping with us.\n\n-Customer Service",
+
+  "fear": "Hi <customer-title>. <customer-name>,\n\n\tWe are sorry for the troubles you've been having with your order. The following orders have been canceled:\n<orders>A full refund of <order-total-cost> has been credited to your credit card ending in <customer-credit-card-code>. We hope you've had a great experience shopping with us.\n\n-Customer Service",
+
+  "joy": "Hi <customer-title>. <customer-name>,\n\n\tThank you for being our customer. The following orders have been canceled:\n<orders>A full refund of <order-total-cost> has been credited to your credit card ending in <customer-credit-card-code>. We hope you've had a great experience shopping with us.\n\n-Customer Service",
+  
+  "sadness": "Hi <customer-title>. <customer-name>,\n\n\tWe are sorry for the troubles you've been having with your order. The following orders have been canceled:\n<orders>A full refund of <order-total-cost> has been credited to your credit card ending in <customer-credit-card-code>. We hope you've had a great experience shopping with us.\n\n-Customer Service"
+}

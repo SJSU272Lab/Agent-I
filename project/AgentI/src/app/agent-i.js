@@ -2,6 +2,7 @@
 'use strict';
 
 var async = require('async');
+var fs = require('fs');
 
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var toneAnalyzer = new ToneAnalyzerV3({
@@ -27,12 +28,13 @@ exports.analyze = function(email, sendResponse) {
     
     var customer = results[0];
 
-    var emotionTones = results[1][0].document_tone.tone_categories[0].tones;
-    var overallTone = getOverallTone(emotionTones);
+    var overallTone = getOverallTone(results[1][0].document_tone.tone_categories[0].tones);
 
     var queryCategory = results[2];
 
-    generateResponses(customer, emotionTones, overallTone, queryCategory, sendResponse);
+    var response = generateResponse(customer, overallTone, queryCategory);
+
+    sendResponse(null, response);
   });
 };
 
@@ -60,19 +62,29 @@ function getOverallTone(emotionTones) {
 }
 
 function analyzeQuery(email, callback) {
-  var queryCategory = 'refunds';
+  var queryCategory = 'cancel_order';
   callback(null, queryCategory);
 }
 
-function generateResponses(customer, emotionTones, overallTone, queryCategory, sendResponse) {
-  var response = {
-    tones: emotionTones,
-    overallTone: overallTone,
-    templates: [
-      '',
-      ''
-    ]
+function generateResponse(customer, overallTone, queryCategory) {
+  var templateFiles = {
+    cancel_order: 'cancel-order.json',
+    damaged_order: 'damaged-order.json',
+    delivery_status: 'delivery-status.json',
+    missing_order: 'missing-order.json',
+    payment_issues: 'payment-issues.json',
+    refund_status: 'refund-status.json',
+    refunds_information: 'refunds-information.json',
+    returns_information: 'returns-information.json',
+    returns_status: 'returns-status.json'
   };
 
-  sendResponse(null, response);
+  var templateFile = templateFiles[queryCategory];
+  return render(templateFile, customer, overallTone);
+}
+
+function render(templateFile, customer, tone) {
+  var templatePath = __dirname + '/templates/' + templateFile;
+  var template = JSON.parse(fs.readFileSync(templatePath, 'utf8'))[tone];
+  return template;
 }
