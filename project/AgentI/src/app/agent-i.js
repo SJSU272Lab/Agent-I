@@ -2,7 +2,8 @@
 'use strict';
 
 var async = require('async');
-var ejs = require('ejs');
+var nunjucks = require('nunjucks');
+var juice = require('juice');
 var fs = require('fs');
 
 var config = require('../config.json');
@@ -113,8 +114,9 @@ function kebabCase(naturalStr) {
 
 function generateResponse(order, overallTone, queryCategory, callback) {
   var templateFile = getTemplateFile(queryCategory, overallTone);
-  var html = ejs.render(fs.readFileSync(templateFile, 'utf8'), { order: order });
-  return html;
+  var html = nunjucks.render(templateFile, { order: order });
+  var inlined = juice(html);
+  return inlined;
 }
 
 function getTemplateFile(queryCategory, tone) {
