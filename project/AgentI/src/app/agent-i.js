@@ -2,20 +2,30 @@
 'use strict';
 
 var async = require('async');
+var ejs = require('ejs');
 var fs = require('fs');
+
+var config = require('../config.json');
+var mongo = require("./mongo");
 
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var toneAnalyzer = new ToneAnalyzerV3({
-  username : '977db511-4b58-4f44-9a6c-cb5df2bc15a1',
-  password : 'cuxQCNC3fO7p',
-  version_date : '2016-05-19'
+  username : config.toneAnalyzer.username,
+  password : config.toneAnalyzer.password,
+  version_date : config.toneAnalyzer.version
 });
 
+var watson = require('watson-developer-cloud');
+var natural_language_classifier = watson.natural_language_classifier({
+  username:  config.nlp.username,
+  password: config.nlp.password,
+  version: config.nlp.version
+});
  
 exports.analyze = function(email, sendResponse) {
   async.parallel([
     function(callback) {
-      extractCustomerInfo(email, callback);
+      extractOrderInfo(email, callback);
     },
     function(callback) {
       analyzeTone(email, callback);
@@ -24,23 +34,45 @@ exports.analyze = function(email, sendResponse) {
       analyzeQuery(email, callback);
     }
   ], function(err, results) {
-    if (err) sendResponse(err);
-    
-    var customer = results[0];
+    if (err) {
+      sendResponse(err);
+      return;
+    }
+
+    var order = results[0];
 
     var overallTone = getOverallTone(results[1][0].document_tone.tone_categories[0].tones);
 
     var queryCategory = results[2];
 
-    var response = generateResponse(customer, overallTone, queryCategory);
+    var response = generateResponse(order, overallTone, queryCategory);
 
     sendResponse(null, response);
   });
 };
 
-function extractCustomerInfo(email, callback) {
-  var customer = {};
-  callback(null, customer);
+function extractOrderInfo(email, callback) {
+  var orderIdPattern = /\d{4}-\d{7}-\d{7}/i;
+  var results = email.match(orderIdPattern);
+  if (results && results.length > 0) {
+    getOrder(results[0], function (err, data) {
+      if (err) {
+        console.log(err);
+        callback(err);
+      } else callback(null, data);
+    });
+  }
+  else callback('Could not retrieve order information.', null);
+}
+
+function getOrder(id, callback) {
+  mongo.connect(config.mongoURL, function(db) {
+    var collection = db.collection('orders', { connectTimeoutMS: 3000 });
+    collection.findOne({ orderId : id }, function (err, order) {
+      if (err) callback(err);
+      else callback(null, order);
+    });
+  });
 }
 
 function analyzeTone(email, callback) {
@@ -62,29 +94,55 @@ function getOverallTone(emotionTones) {
 }
 
 function analyzeQuery(email, callback) {
-  var queryCategory = 'cancel_order';
-  callback(null, queryCategory);
+  natural_language_classifier.classify({
+    text: email,
+    classifier_id: config.nlp.classifierId
+  }, function(err, response) {
+    if (err) {
+      console.log('analyzeQuery error:', err);
+      callback(err, null);
+    }
+    else
+      callback(null, kebabCase(response.classes[0].class_name));
+  });
 }
 
-function generateResponse(customer, overallTone, queryCategory) {
-  var templateFiles = {
-    cancel_order: 'cancel-order.json',
-    damaged_order: 'damaged-order.json',
-    delivery_status: 'delivery-status.json',
-    missing_order: 'missing-order.json',
-    payment_issues: 'payment-issues.json',
-    refund_status: 'refund-status.json',
-    refunds_information: 'refunds-information.json',
-    returns_information: 'returns-information.json',
-    returns_status: 'returns-status.json'
-  };
-
-  var templateFile = templateFiles[queryCategory];
-  return render(templateFile, customer, overallTone);
+function kebabCase(naturalStr) {
+  return naturalStr.toLowerCase().replace(' ', '-');
 }
 
-function render(templateFile, customer, tone) {
-  var templatePath = __dirname + '/templates/' + templateFile;
-  var template = JSON.parse(fs.readFileSync(templatePath, 'utf8'))[tone];
-  return template;
+function generateResponse(order, overallTone, queryCategory, callback) {
+  var templateFile = getTemplateFile(queryCategory, overallTone);
+  var html = ejs.render(fs.readFileSync(templateFile, 'utf8'), { order: order });
+  return html;
+}
+
+function getTemplateFile(queryCategory, tone) {
+  var templatePath = __dirname + '/' + config.templateFolder;
+  
+  // Could do binary search here but not worth it yet...
+  var catPath = '';
+  var catFolder = '';
+  var catFolders = fs.readdirSync(templatePath);
+  for (var i = 0; i < catFolders.length; ++i) {
+    catFolder = catFolders[i];
+    if (catFolder === queryCategory) {
+      catPath = templatePath + '/' + catFolder;
+      break;
+    }
+  }
+
+  // Could do binary search here but not worth it yet...
+  var templateFile = '';
+  var toneFile = '';
+  var toneFiles = fs.readdirSync(catPath);
+  for (i = 0; i < toneFiles.length; ++i) {
+    toneFile = toneFiles[i];
+    if (toneFile.substr(0, toneFile.lastIndexOf('.')) === tone) {
+      templateFile = catPath + '/' + toneFile;
+      break;
+    }
+  }
+
+  return templateFile;
 }
