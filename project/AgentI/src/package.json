@@ -17,6 +17,10 @@
     "juice": "^4.0.2",
     "mongodb": "^2.2.14",
     "nunjucks": "^3.0.0",
-    "watson-developer-cloud": "^2.13.1"
+    "watson-developer-cloud": "^2.13.1",
+    "base64url": "^2.0.0",
+    "express": "3.2.6",
+    "google-auth-library": "^0.9.10",
+    "googleapis": "^15.0.0"
   }
 }
