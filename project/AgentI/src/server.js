@@ -17,17 +17,21 @@ api.listen(PORT, function() {
   console.log('AgentI listening on port ' + PORT);
 });
 
-gmail.generateDrafts(function(err) {
-  if (!err) {
-    console.log('Polling for customer emails...');
-    new CronJob(
-      '*/30 * * * * *',
-      gmail.generateDrafts,
-      function(err) {},
-      true,
-      'America/Los_Angeles'
-    );
-  }
+var readMessages = new Set();
+gmail.generateDrafts(readMessages, function(err) {
+  if (err) return;
+
+  console.log('Polling for customer emails...');
+  new CronJob(
+    '*/30 * * * * *',
+    function() {
+      console.log(readMessages);
+      gmail.generateDrafts(readMessages, function(err) {});
+    },
+    null,
+    true,
+    'America/Los_Angeles'
+  );
 });
 
 module.exports = api;

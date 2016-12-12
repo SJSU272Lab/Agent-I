@@ -19,5 +19,6 @@
   },
   "mongoURL": "mongodb://username:password@instance-id.mlab.com:55727/db",
 
-  "templateFolder": "templates"
+  "templateFolder": "templates",
+  "errorTemplate": "missing-order-info.html"
 }

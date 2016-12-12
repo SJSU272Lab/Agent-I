@@ -20,10 +20,10 @@ var SCOPES = [
 ];
 var TOKEN_PATH = __dirname + '/' + config.gmail.tokenFolder + '/gmail-token.json';
 
-exports.generateDrafts = function(callback) {
+exports.generateDrafts = function(excludedMessages, callback) {
   checkCredentials(function(auth) {
-    callback(null);
-    getMessageList(auth);
+    callback();
+    getMessageList(excludedMessages, auth);
   });
 };
 
@@ -106,7 +106,7 @@ function getNewToken(oauth2Client, callback) {
   });
 }
 
-function getMessageList(auth) {
+function getMessageList(excludedMessages, auth) {
   var data = {
     auth : auth,
     userId: config.gmail.userId,
@@ -118,7 +118,7 @@ function getMessageList(auth) {
     var messages = list.messages;
     if (!messages) return;
 
-    var readMessages = new Set();
+    var readMessages = excludedMessages;
     messages.forEach(function(message) {
       if (!readMessages.has(message.id)) {
         getMessage(message, auth);
@@ -168,6 +168,7 @@ function getMessage(email, auth) {
 
       var draftTo;
       var draftSubject;
+      var draftReplyToMessageId;
       var headers = res.payload.headers;
       if (!headers) {
         console.log('Email has no header.');
@@ -176,26 +177,29 @@ function getMessage(email, auth) {
 
       var header;
       for (var i = 0; i < headers.length; ++i) {
-        if (draftTo && draftSubject) break;
+        if (draftTo && draftSubject && draftReplyToMessageId) break;
 
         header = headers[i];
         if (header.name === 'From') draftTo = header.value;
         else if (header.name === 'Subject') draftSubject = header.value;
+        else if (header.name === 'Message-ID') draftReplyToMessageId = header.value;
       }
 
       var draft = [];
       draft.push('To: ' + draftTo);
       draft.push('From: ' + config.gmail.email);
-      draft.push('Content-type: text/html;charset=iso-8859-1');
       draft.push('Subject: ' + draftSubject);
+      draft.push('Content-type: text/html;charset=iso-8859-1');
+      draft.push('In-Reply-To: ' + draftReplyToMessageId);
+      draft.push('References: ' + draftReplyToMessageId);
       draft.push(template);
 
       var data = {
         auth : auth,    
         userId: config.gmail.userId,
-        threadId : res.threadId,
         media: {
           mimeType: 'message/rfc822',
+          threadId : res.threadId,
           body: draft.join('\n')
         }
       };

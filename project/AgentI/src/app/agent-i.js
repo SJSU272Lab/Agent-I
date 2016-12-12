@@ -113,7 +113,11 @@ function kebabCase(naturalStr) {
 }
 
 function generateResponse(order, overallTone, queryCategory, callback) {
-  var templateFile = getTemplateFile(queryCategory, overallTone);
+  var templateFile;
+  if (!order && queryCategory !== 'payment-issues')
+    templateFile = __dirname + '/' + config.templateFolder + '/' + config.errorTemplate;
+  else templateFile = getTemplateFile(queryCategory, overallTone);
+  
   var html = nunjucks.render(templateFile, { order: order });
   var inlined = juice(html);
   return inlined;
