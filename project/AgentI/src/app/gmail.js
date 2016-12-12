@@ -16,15 +16,21 @@ var TOKEN_PATH = TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 
 
 // Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
-  if (err) {
-    console.log('Error loading client secret file: ' + err);
-    return;
-  }
-  // Authorize a client with the loaded credentials, then call the
-  // Gmail API.
-  authorize(JSON.parse(content), getMessageList);
-});
+
+
+
+exports.checkCredentials = function(){
+	fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+		  if (err) {
+		    console.log('Error loading client secret file: ' + err);
+		    return;
+		  }
+		  // Authorize a client with the loaded credentials, then call the
+		  // Gmail API.
+		  authorize(JSON.parse(content), getMessageList);
+		});
+};
+
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
  * given callback function.
@@ -95,8 +101,6 @@ function storeToken(token) {
   try {
 	  console.log(TOKEN_DIR);
 	  console.log(TOKEN_PATH);
-
-	  
 	  fs.mkdirSync(TOKEN_DIR);
   } catch (err) {
     if (err.code != 'EEXIST') {
@@ -107,52 +111,31 @@ function storeToken(token) {
   console.log('Token stored to ' + TOKEN_PATH);
 }
 
-/**
- * Lists the labels in the user's account.
- * 
- * @param {google.auth.OAuth2}
- *            auth An authorized OAuth2 client.
- */
-function listLabels(auth) {
-  var gmail = google.gmail('v1');
-  gmail.users.labels.list({
-    auth: auth,
-    userId: 'me',
-  }, function(err, response) {
-    if (err) {
-      console.log('The API returned an error: ' + err);
-      return;
-    }
-    var labels = response.labels;
-    if (labels.length == 0) {
-      console.log('No labels found.');
-    } else {
-      console.log('Labels:');
-      for (var i = 0; i < labels.length; i++) {
-        var label = labels[i];
-        console.log('- %s', label.name);
-      }
-    }
-  });
-}
-
-
 var gmail = google.gmail('v1'); 
+var readMessages = [];
 
 function getMessageList(auth){
+	
 	var data2 = {
 	  auth : auth,
       userId: 'me',
       labelIds : ['UNREAD','CATEGORY_PERSONAL'],
-      threadId : '158d72cdc2357068',
-	  media: {
+      media: {
 			mimeType: 'message/rfc822',
 			}
 	};
 											
 	gmail.users.messages.list(data2,function(err, result){
 	    	for(var i=0;i<result.messages.length;i++){
-	    		getMessage(result.messages[i],auth);
+	    		console.log(readMessages.indexOf(result.messages[i].id));
+	    		if(readMessages.indexOf(result.messages[i].id) == -1){
+		    		console.log(result.messages[i].id);
+	    			readMessages.push(result.messages[i].id); 
+	    
+		    		console.log("got message");
+		    		
+		    		//			getMessage(result.messages[i],auth);
+	    		}
 	    	}
 	});
 }
@@ -180,57 +163,56 @@ function getMessage(mail,auth){
 				var message;
 				if(messageBody !== undefined){
 					for(var i=0;i<=messageBody.length;i++){
-				//	console.log(messageBody[i]);
+				// console.log(messageBody[i]);
 				if(messageBody[i] !== undefined){
 					console.log(messageBody[i]);
 					if(messageBody[i].mimeType === 'text/plain'){
 							message =+ base64url.decode(messageBody[i].body.data);
 				    		console.log(message);
-				    		createDraft(result2,message,auth);
-
-				   // call Watson Natural Language Classifier send (message) }
+				 // call Watson Natural Language Classifier send (message) }
+				    		callWatson(message,function(err,draftMsg){
+				    			if(err){
+				    				// do something
+				    			}
+				    			if(draftMsg){
+				    				var sendingTo;
+				    				var sendingSubject;
+				    				var header = result2.payload.headers;
+				    				for(var i=0;i<header.length;i++){
+				    					if(header[i].name === 'From'){
+				    						sendingTo = header[i].value;
+				    			    		console.log(header[i].value);
+				    					}
+				    					if(header[i].name === 'Subject'){
+				    						sendingSubject = header[i].value;
+				    			    		console.log(header[i].value);
+				    					}
+				    				}
+				    				
+				    				var message = "To:"+sendingTo+"\n" +
+				    				"From: kenftlp@gmail.com\n" +
+				    				"Subject: "+sendingSubject+"\n" + "\n" + draftMsg;
+				    				// Provide Watson generated draft email
+						
+				    				var data = {
+				    						auth : auth,		
+				    						userId: 'me',
+				    						threadId : result2.threadId,
+				    						media: {
+				    						mimeType: 'message/rfc822',
+				    						body: message 	
+				    						}
+				    					};	    		
+				    				gmail.users.drafts.create(data,function(err,result3){
+				    				console.log(result3);	    			
+				    			});
+			    			}
+			    		});
 					}
-		
 					}
 				}			
 			}
-				
 			}
 		}
 	});
-}
-
-// Provide Watson generated draft email
-function createDraft(result2,draft,auth){
-	var sendingTo;
-	var sendingSubject;
-	var header = result2.payload.headers;
-	for(var i=0;i<header.length;i++){
-		if(header[i].name === 'From'){
-			sendingTo = header[i].value;
-    		console.log(header[i].value);
-		}
-		if(header[i].name === 'Subject'){
-			sendingSubject = header[i].value;
-    		console.log(header[i].value);
-		}
-	}
-	
-	var message = "To:"+sendingTo+"\n" +
-	"From: kenftlp@gmail.com\n" +
-	"Subject: "+sendingSubject+"\n" + "\n" + draft;
-							
-	var data = {
-			auth : auth,		
-			userId: 'me',
-			threadId : result2.threadId,
-			media: {
-			mimeType: 'message/rfc822',
-			body: message 	
-			}
-		};	    		
-	gmail.users.drafts.create(data,function(err,result3){
-	console.log(result3);	    			
-});
-
 }
