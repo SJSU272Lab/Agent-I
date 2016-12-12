@@ -1,5 +1,6 @@
 /node_modules
 config.json
-npm-debug.log
-client_secret.json
-/TOKEN_DIR
+**/npm-debug.log
+
+app/.credentials
+app/client-secret.json

@@ -1,0 +1,23 @@
+{
+  "gmail": {
+    "tokenFolder": ".credentials",
+    "clientSecret": "client-secret.json",
+    "userId": "secret-agent-id",
+    "email": "agenti@gmail.com",
+    "version": "v1"
+  },
+  "toneAnalyzer": {
+    "username": "bluemix-app-tone-analyzer-username",
+    "password": "bluemix-app-tone-analyzer-password",
+    "version": "2016-05-19"
+  },
+  "nlp": {
+    "username": "bluemix-app-nlp-username",
+    "password": "bluemix-app-nlp-password",
+    "version": "v1",
+    "classifierId": "bluemix-app-nlp-classfier-id"
+  },
+  "mongoURL": "mongodb://username:password@instance-id.mlab.com:55727/db",
+
+  "templateFolder": "templates"
+}

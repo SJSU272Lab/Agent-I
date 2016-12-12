@@ -1,8 +1,8 @@
 /* jslint node: true */
 'use strict';
 
-var express       = require('express');
-var bodyParser    = require('body-parser');
+var express = require('express');
+var bodyParser = require('body-parser');
 var AppController = require('./app/controller');
 var CronJob = require('cron').CronJob;
 var gmail = require ('./app/gmail');
@@ -17,8 +17,17 @@ api.listen(PORT, function() {
   console.log('AgentI listening on port ' + PORT);
 });
 
-gmail.checkCredentials();
-// new CronJob('*/5 * * * * *', gmail.checkCredentials, null, true, 'America/Los_Angeles');
-
+gmail.generateDrafts(function(err) {
+  if (!err) {
+    console.log('Polling for customer emails...');
+    new CronJob(
+      '*/30 * * * * *',
+      gmail.generateDrafts,
+      function(err) {},
+      true,
+      'America/Los_Angeles'
+    );
+  }
+});
 
 module.exports = api;
