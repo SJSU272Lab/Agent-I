@@ -5,6 +5,8 @@ var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var base64url = require('base64url');
 
+var AgentI = require("./agent-i");
+
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/gmail-nodejs-quickstart.json
@@ -169,10 +171,10 @@ function getMessage(mail,auth){
 				if(messageBody[i] !== undefined){
 					console.log(messageBody[i]);
 					if(messageBody[i].mimeType === 'text/plain'){
-							message =+ base64url.decode(messageBody[i].body.data);
-				    		console.log(message);
+							message = base64url.decode(messageBody[i].body.data);
+				    		console.log('message' + message);
 				 // call Watson Natural Language Classifier send (message) }
-				    		callWatson(message,function(err,draftMsg){
+				    		AgentI.analyze(message,function(err,draftMsg){
 				    			if(err){
 				    				// do something
 				    			}
