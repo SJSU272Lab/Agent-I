@@ -63,7 +63,7 @@ function extractOrderInfo(email, callback) {
       } else callback(null, data);
     });
   }
-  else callback('Could not retrieve order information.', null);
+  else callback(false, null);
 }
 
 function getOrder(id, callback) {

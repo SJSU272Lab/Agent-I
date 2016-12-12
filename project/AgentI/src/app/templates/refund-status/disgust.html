@@ -1,0 +1,22 @@
+{% extends "../layout.html" %}
+
+{% block content %}
+<p>
+  Hi {{ order.buyerInfo.fullName }},
+</p>
+<p>
+  {% if order.orderStatus === 'Refunded' || order.orderStatus === 'Returned' %}
+  Your order has already been refunded. The refunded amount usually takes 10 business days to be reflected on your bank statement. This is dependent on your bank account.
+  {% elif order.orderStatus === 'Processing Refund' || order.orderStatus === 'Return PickedUp' || order.orderStatus === 'Processing Return'%}
+  Your refund is currently being processed. You will see the full refund amount in your account within 5-7 business days.
+  {% else %}
+  We have initiated a refund on your order. You will see the full refund amount in your account within 5-7 business days.
+  {% endif %}
+</p>
+<p>
+  Thank you for shopping with us.
+</p>
+<p>
+  - Customer Service Team
+</p>
+{% endblock %}
