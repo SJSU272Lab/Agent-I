@@ -186,21 +186,21 @@ function getMessage(email, auth) {
       }
 
       var draft = [];
-      draft.push('To: ' + draftTo);
-      draft.push('From: ' + config.gmail.email);
-      draft.push('Subject: ' + draftSubject);
-      draft.push('Content-type: text/html;charset=iso-8859-1');
       draft.push('In-Reply-To: ' + draftReplyToMessageId);
       draft.push('References: ' + draftReplyToMessageId);
+      draft.push('Subject: ' + draftSubject);
+      draft.push('From: ' + config.gmail.email);
+      draft.push('To: ' + draftTo);
+      draft.push('Content-type: text/html;charset=iso-8859-1');
       draft.push(template);
-
       var data = {
         auth : auth,    
         userId: config.gmail.userId,
-        media: {
-          mimeType: 'message/rfc822',
-          threadId : res.threadId,
-          body: draft.join('\n')
+        resource: {
+          message: {
+            threadId : res.threadId,
+            raw: base64url.encode(draft.join('\n'))
+          }
         }
       };
 
