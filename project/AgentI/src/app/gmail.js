@@ -195,6 +195,7 @@ function getMessage(mail,auth){
 				    				
 				    				var message = "To:"+sendingTo+"\n" +
 				    				"From: agenti@gmail.com\n" +
+                    "Content-type: text/html;charset=iso-8859-1\n" +
 				    				"Subject: "+sendingSubject+"\n" + "\n" + draftMsg;
 				    				// Provide Watson generated draft email
 						
