@@ -6,7 +6,7 @@
 </p>
 <p>
   Your order status is "{{ order.orderStatus }}".
-  {% if order.orderStatus === 'Being Processed' || order.orderStatus === 'Shipped' %}
+  {% if order.orderStatus === 'Being Processed' or order.orderStatus === 'Shipped' %}
   Orders are usually delivered within 5-7 business days.
   {% elif order.orderStatus === 'Out for delivery' %}
   Deliveries usually occur between the hours of 8 AM to 4 PM.

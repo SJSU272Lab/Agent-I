@@ -126,6 +126,8 @@ function getMessageList(auth){
 	};
 											
 	gmail.users.messages.list(data2,function(err, result){
+    if (!result.messages) return;
+
 	    	for(var i=0;i<result.messages.length;i++){
 	    		console.log(readMessages.indexOf(result.messages[i].id));
 	    		if(readMessages.indexOf(result.messages[i].id) == -1){
@@ -134,7 +136,7 @@ function getMessageList(auth){
 	    
 		    		console.log("got message");
 		    		
-		    		//			getMessage(result.messages[i],auth);
+		    					getMessage(result.messages[i],auth);
 	    		}
 	    	}
 	});
@@ -190,7 +192,7 @@ function getMessage(mail,auth){
 				    				}
 				    				
 				    				var message = "To:"+sendingTo+"\n" +
-				    				"From: kenftlp@gmail.com\n" +
+				    				"From: agenti@gmail.com\n" +
 				    				"Subject: "+sendingSubject+"\n" + "\n" + draftMsg;
 				    				// Provide Watson generated draft email
 						
