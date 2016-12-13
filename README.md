@@ -28,3 +28,12 @@ Responding to such emails take time, even with pre-made templates. A customer se
 
 - Bob is a senior customer service associate. He's been using **Agent-I** for a long time. Most of the time he is happy to send the generated emails without further modifications, but sometimes he likes to modify the emails to make them more personal. **Agent-I** has adapted to the changes that he has made and over time he has had to make less changes. Bob now sets up **Agent-I** to automatically send generated emails. He is able to fine-tune which kinds of enqueries receive an automatic responds and which require his review. He now has more time than ever to respond to customer calls and more involved tasks.
 
+Video Link - https://www.youtube.com/watch?v=U4Yw1-p1Ku0
+
+Check out our presentation:
+
+https://docs.google.com/presentation/d/1A5HaAIEXIA8HIzlrqRQ3mBs6w1k8mxjfc7EDM9xUtWU/edit?usp=sharing
+
+How do I get the project up and running ?
+
+1. 
