@@ -37,4 +37,20 @@ https://docs.google.com/presentation/d/1A5HaAIEXIA8HIzlrqRQ3mBs6w1k8mxjfc7EDM9xU
 How do I get the project up and running ?
 
 1. clone the project
-2. 
+2. npm install
+3. create a config.json with the schema defined in config.json.sample in the same directory 
+*prequsite: IBM Watson Tone Analyser and Natural Language Processor services on IBM Watson*
+4. client-secret.json in /app folder with the schema :
+{
+  "installed":
+  {
+    "client_id":"",
+    "project_id":"",
+    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+    "token_uri":"https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret":"",
+    "redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]
+  }
+}
+5. Start your application !
