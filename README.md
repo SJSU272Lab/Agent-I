@@ -36,4 +36,5 @@ https://docs.google.com/presentation/d/1A5HaAIEXIA8HIzlrqRQ3mBs6w1k8mxjfc7EDM9xU
 
 How do I get the project up and running ?
 
-1. 
+1. clone the project
+2. 
