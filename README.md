@@ -30,7 +30,7 @@ Responding to such emails take time, even with pre-made templates. A customer se
 
 Video Link - https://www.youtube.com/watch?v=U4Yw1-p1Ku0
 
-## Check out our presentation:
+### Check out our presentation:
 
 https://docs.google.com/presentation/d/1A5HaAIEXIA8HIzlrqRQ3mBs6w1k8mxjfc7EDM9xUtWU/edit?usp=sharing
 
