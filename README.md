@@ -74,7 +74,7 @@ Case 3: I haven't received my product yet although the delivery date has long go
 ### Contact us:
 
 anudeep.rentala[at the rate]sjsu.edu 
-tuan.pham@sjsu.edu[at the rate]sjsu.edu 
+tuan.pham[at the rate]sjsu.edu 
 nilampratim.deka[at the rate]sjsu.edu 
 arunabh.shrivastava[at the rate]sjsu.edu 
 
