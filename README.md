@@ -83,7 +83,11 @@ arunabh.shrivastava[at the rate]sjsu.edu
 Where is the app URL ?
 
 This doesn't have one, its integrated with Gmail client. So contact us to gain credentials of it.
-Or, integrate it to your gmail URL by dropping your email id in the token when the app starts.
+Or, integrate it to your gmail URL clicking on the gmail authentication link and select the gmail you plan to use. You would get an authentication token that you would have to enter in the command line to start.
+
+How do I use it ?
+
+Send an email to the configured email with the above sample data and see the reccomended response generated in your gmail drafts.
 
 How do I start this ?
 
