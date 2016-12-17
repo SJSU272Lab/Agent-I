@@ -34,7 +34,7 @@ Video Link - https://www.youtube.com/watch?v=U4Yw1-p1Ku0
 
 https://docs.google.com/presentation/d/1A5HaAIEXIA8HIzlrqRQ3mBs6w1k8mxjfc7EDM9xUtWU/edit?usp=sharing
 
-How do I get the project up and running ?
+### How do I get the project up and running ?
 
 1. clone the project
 2. npm install
@@ -54,3 +54,42 @@ How do I get the project up and running ?
   }
 }
 5. Start your application !
+
+On application start, you would need to click on the gmail authentication link add the token in command line to authenticate.
+
+Or contact us for an already configured email.
+
+
+
+
+### Sample Data:
+
+Case 1: Hi I got an order last night but the box was empty ! This is ridiculous ! my order id is 1000-9615248-7848667
+
+Case 2: Hi, I am waiting for a return pickup. My order id is 1000-4871691-6788143 . When can i expect the pick up ?
+
+Case 3: I haven't received my product yet although the delivery date has long gone by. 
+
+
+### Contact us:
+
+anudeep.rentala[at the rate]sjsu.edu 
+tuan.pham@sjsu.edu[at the rate]sjsu.edu 
+nilampratim.deka[at the rate]sjsu.edu 
+arunabh.shrivastava[at the rate]sjsu.edu 
+
+### FAQs
+
+Where is the app URL ?
+
+This doesn't have one, its integrated with Gmail client. So contact us to gain credentials of it.
+Or, integrate it to your gmail URL by dropping your email id in the token when the app starts.
+
+How do I start this ?
+
+See "How do I get the project up and running ?"
+
+Still doesn't work ?
+
+Contact us. Expect response in <30 minutes.
+
